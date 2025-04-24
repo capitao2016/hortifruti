@@ -1,0 +1,19 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html{
+    font-size: 62.5%;
+}
+:root{
+    /* CORES PADRÕES */
+    --dark-green: #014d00;
+    --light-green: #289635;
+    --red: #ce2413;
+    --orange: #f5701e;
+
+    /* FONTES PADRÕES */
+    --fonte-primaria: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    --fonte-secundaria: font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
