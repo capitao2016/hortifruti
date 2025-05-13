@@ -2,10 +2,11 @@
     include_once('../config/conexao.php');
 
     $id = $_POST['id'];
-    $sql = "SELECT * FROM produtos WHERE id=$id";
+    $sql = "SELECT * FROM cd_produtos WHERE id=$id";
     $query = mysqli_query($con, $sql);
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -27,11 +28,13 @@
             <?php
                  while($dados = mysqli_fetch_array($query)){
             ?>
-            <form action="../html/index.php" method="POST" id="form">
+            <form action="../html/index.php" method="GET" id="form">
                 <input type="hidden" name="id" value="<?php echo $dados['id'];?>">
+                <input type="hidden" name="item" value="<?php echo $dados['item'];?>">
+                <input type="hidden" name="preco" value="<?php echo $dados['preco'];?>">
                 <div class="box_titulo">
                     <div class="divTitulo">
-                        <p class="titulo"><?php echo $dados['nome'];?></p>
+                        <p class="titulo"><?php echo $dados['item'];?></p>
                     </div>
                     <div class="descTitulo">
                         <p>--- <span>Média</span> ---</p>
@@ -49,18 +52,17 @@
                             <p class="peso"><?php echo number_format($dados['peso'],3,',','.');?></p>
                             <p class="tipo"><?php echo $dados['tipo'];?></p>
                             <p class="media">Média</p>
-
                         </div>
                     </div>
                 </div>
+                <input type="number" name="qnt" class="input_qnt" value="1">
                 <button type="submit" class="add" name="add">
                     <span class="material-icons">shopping_cart</span>
                     Adicionar
                 </button>
             </form>
-            <div class="box_qnt">
+                 <div class="box_qnt">
                     <button class="menos btn"><span class="material-icons">remove</span></button>
-                    <input type="text" class="input_qnt" value="1" autofocus>
                     <button class="mais btn"><span class="material-icons">add</span></button>
                 </div>
             <?php }?>

@@ -468,16 +468,27 @@ main{
                     font-size: 3em;
                 }
             }
-            .input_qnt{
-                font-family: fantasy;
-                width: 2.2em;
-                outline: none;
-                text-align: center;
-                border: none;
-                font-size: 3em;
-                background-color: transparent;
-                color: white;
-            }
+        }
+        .input_qnt{
+            position: absolute;
+            width: 2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            bottom: 5.2em;
+            left: calc(50% - 1em);
+            font-family: fantasy;
+            outline: none;
+            text-align: center;
+            border: none;
+            font-size: 3em;
+            background-color: transparent;
+            color: white;
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
         .add{
             position: absolute;

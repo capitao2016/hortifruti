@@ -1,12 +1,24 @@
 <?php
+    session_start();
+
     include ('../config/conexao.php');
 
-    $sql = "SELECT * FROM produtos WHERE categoria='frutas'";
+    $sql = "SELECT * FROM cd_produtos WHERE categoria='frutas'";
     $query = mysqli_query($con, $sql);
 
-    
-?>
+        if(!isset($_SESSION['carrinho'])){
+            $_SESSION['carrinho'] = array( );
+         }
+        // print_r($_SESSION['carrinho']);
+        if(isset($_GET['add'])){
+            $id = $_GET['id'];
+            $qnt = $_GET['qnt'];
 
+            if(!isset($_SESSION['carriinho'] [ '$id'])){
+                $_SESSION['carriinho']  [$id] = $qnt ;
+            }
+        }
+?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -54,7 +66,7 @@
                 <div class="barra_info">
                     <div class="container_search">
                         <div class="box_search">
-                            <input type="text" maxlength="20" class="search">
+                            <input type="search" maxlength="20" class="search">
                             <button>
                                 <span class="material-icons">search</span>
                             </button>
@@ -85,10 +97,10 @@
                         <button type="submit" class="container_item" id="container_item">
                             <input type="hidden" value="<?php echo $dados['id'];?>" name="id" id="id">
                             <div class="box_titulo">
-                                <p class="titulo nome"><?php echo $dados['nome'];?></p>
+                                <p class="titulo nome"><?php echo $dados['item'];?></p>
                             </div>
                             <div class="img">
-                                <img src="<?php echo $dados['nomeImagem'];?>" alt="abacate">
+                                <img src="<?php echo $dados['nomeImagem'];?>">
                             </div>
                         </button>
                     </form>
@@ -97,70 +109,163 @@
             </div>
         <!-- CONTAINER RESUMO -->
             <div class="container_resumo">
-               <div class="cart_item">
-                    <table>
-                        <tr class="linha">
-                            <td>
-                                <div class="table_item">
-                                    <div class="linha1">
-                                        <p class="titulo_item">Goiaba Vermelha</p>
-                                        <p class="valor_item">R$ <span>10,00</span></p>
-                                    </div>
-                                    <div class="linha2">
-                                        <p class="qnt">1.5 <span>Kg</span></p>
-                                        <p class="media">Media <span>4 a 6 Und.</span></p>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-               </div>
-               <div class="btn_buy">
-                    <button><p>Pagamento</p></button>
-               </div>
+                <div class="cart_item">
+                        <div class="table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" class="cod">Cod</th>
+                                        <th>Descrição</th>
+                                        <th>Qnt</th>
+                                        <th>Unit.</th>
+                                        <th>Total</th>
+                                        <th>~</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   <?php
+                                        // session_destroy();
+
+                                        //  if(!isset($_SESSION['carrinho'])){
+                                        //     $_SESSION['carrinho'] = array( );
+                                        // }
+                                        // // print_r($_SESSION['carrinho']);
+                                        // if(isset($_GET['add'])){
+                                        //     $id = $_GET['id'];
+                                        //     $qnt = $_GET['qnt'];
+
+                                        //     if(!isset($_SESSION['carriinho'] [ '$id'])){
+                                        //         $_SESSION['carriinho']  [$id] = $qnt ;
+                                        //     }
+                                        // }
+                                            
+                                         if(count($_SESSION['carriinho']) == 0){
+                                                    echo "<tr><td colspan='6'>Não há itens no carrinho!</td></tr>";
+                                         }else {
+                                                    foreach($_SESSION['carriinho'] as $id => $qnt){
+                                                        $sql = mysqli_query($con, "SELECT * FROM cd_produtos WHERE id = $id");
+                                                        $bd = mysqli_fetch_array($sql);
+                                                        $item = $bd['item'];
+                                                        $qnt = $qnt;
+                                                        $preco = $bd['preco'];
+                                                        $total = $qnt * $preco;
+                                                        echo "
+                                                            <tr>
+                                                                    <td>$id</td>
+                                                                    <td>$item</td>
+                                                                    <td>$qnt</td>
+                                                                    <td>$preco</td>
+                                                                    <td>$total</td>
+                                                                    <td><a href=''><span class='material-icons'>delete</span></a></td>
+                                                            </tr>
+                                                        ";
+                                                    }
+                                                }  
+                                    ?>
+                                    <!-- <tr>
+                                        <td rowspan="2">?php echo $id;?></td>
+                                        <td colspan="4" class="desc">?php echo $bd['item'];?></td>
+                                        <td rowspan="2"><span class="material-icons">delete</span></td>
+                                    </tr>
+                                    <tr class="linha">
+                                        <td></td>
+                                        <td class="qnt_cart">
+                                            <button class="menos_cart"><span class="material-icons">remove</span></button>
+                                            <input type="number" class="qnt_cart" value="?php echo $qnt;?>">
+                                            <button class="mais_cart"><span class="material-icons">add</span></button>
+                                        </td>
+                                        <td>?php echo $bd['preco'];?></td>
+                                        <td>total</td>
+                                        <td></td>
+                                    </tr> -->
+                                    <!-- ?php }?> -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="footer">
+                            <table>
+                                <!-- <thead>
+                                    <tr>
+                                        <th>qnt item</th>
+                                        <th>espaço vazio</th>
+                                        <th>qnt</th>
+                                    </tr>
+                                </thead> -->
+                                <tbody>
+                                    <?php
+                                            foreach($_SESSION['carriinho'] as $id => $qnt){
+                                                                $sql = mysqli_query($con, "SELECT * FROM cd_produtos WHERE id = $id");
+                                                                $bd = mysqli_fetch_array($sql);
+                                                                $item = $bd['item'];
+                                                                $qnt = $qnt;
+                                                                $preco = $bd['preco'];
+                                                                $total = $qnt * $preco;
+
+                                                                echo "
+                                                                    <tr>
+                                                                        <td class='col-1'>Quantidade de Itens</td>
+                                                                        <td class='col-2'></td>
+                                                                        <td class='col-3'>5</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='col-1'>Sub-Total</td>
+                                                                        <td class='col-2'></td>
+                                                                        <td class='col-3'>50,00</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='col-1'>Cupom de desconto</td>
+                                                                        <td class='col-2'><input type='text' value='JGL2025'></td>
+                                                                        <td class='col-3'><span>-</span>10,00</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class='col-1'>Total</td>
+                                                                        <td class='col-2'></td>
+                                                                        <td class='col-3'><span>=</span>40,00</td>
+                                                                    </tr>
+                                                                ";
+
+                                            }
+                                    ?>
+                                </tbody>
+                            </table>           
+                        </div>
+                </div>
+                <div class="btn_buy">
+                         <button><p>Pagamento</p></button>
+                </div>
             </div>
         </div>    
     </main>
-    <!-- <div class="modal_produtos" id="modal_produtos">
-            <div class="fechar" id="fechar">
-                <button>FECHAR</button>
-            </div>
-            <div class="modal">
-                <form action="" id="form_qnt">
-                <div class="box_titulo">
-                    <p class="titulo">Pêra</p>
-                </div>
-                <div class="box_infor">
-                    <div class="preco">
-                        <div class="cifrao">R$</div>
-                        <div class="price">2,50</div>
-                    </div>
-                    <div class="desc">
-                        <p class="und">und.</p>
-                        <p class="peso">100g <span>Média</span></p>
-                    </div>
-                </div>
-                <div class="box_qnt">
-                    <input type="text" class="input_qnt" value="1">
-                </div>
-                <button class="add" id="submit">
-                    <span class="material-icons">shopping_cart</span>
-                    Adicionar
-                </button>
-                </form>
-                <div class="btn">
-                    <button class="menos btn_qnt"><span class="material-icons">remove</span></button>
-                    <button class="mais btn_qnt"><span class="material-icons">add</span></button>
-                </div>
-            </div>
-    </div> -->
-    <div class="modal_menu">
-        <div class="fechar_menu">X</div>
-        <div class="menu">
-            <a href=""><h2>Admin</h2></a>
-            <a href=""><h2>Clientes</h2></a>
-            <a href="cd_produtos.php"><h2>cd_produtos</h2></a>
+   <!-- MENU LATERAL -->
+    <div class="menu_modal">
+        <div class="btn_fechar">
+            <h1>X</h1>
         </div>
+        <div class="menu_lista">
+            <a href="../html/cd_produtos.php">Cadastrar Produtos</a>
+            <a href="../html/comprar.php">comprar</a>
+        </div>                                 
     </div>
 </body>
 </html>
+<!-- <div class="qnt_itens">
+                                <h2>?php echo $item;?></h2>
+                                <h2>5</h2>
+                            </div>
+                            <div class="subtotal">
+                                <h2>SubTotal</h2>
+                                <h2>?php echo $preco;?></h2>
+                            </div>
+                            <div class="cupom">
+                                <h2>Cupom Desconto</h2>
+                                <input type="text" value="jgl2025">
+                                <h2><span>-</span>5,00</h2>
+                            </div>
+                            <div class="taxa">
+                                <h2>Taxa</h2>
+                                <h2><span>+</span>3,00</h2>
+                            </div>
+                            <div class="total">
+                                <h2>Total</h2>
+                                <h2>53,00</h2>
+                            </div> -->

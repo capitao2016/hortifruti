@@ -2,7 +2,7 @@
     include ('../config/conexao.php');
 
     if(isset($_POST['cadastrar'])){
-        $nome = $_POST['nome'];
+        $item = $_POST['item'];
         $preco = $_POST['preco'];
         $tipo = $_POST['tipo'];
         $peso = $_POST['peso'];
@@ -16,7 +16,7 @@
         $path = $pasta . $novoNome . '.' . $extensao;
         $resul = move_uploaded_file($img['tmp_name'], $path);
 
-        MYSQLI_QUERY($con, "INSERT INTO produtos(nome, preco, tipo, peso, categoria, img, nomeImagem) VALUES('$nome', '$preco', '$tipo', '$peso', '$categoria', '$nomeImagem', '$path')");
+        MYSQLI_QUERY($con, "INSERT INTO cd_produtos(item, preco, tipo, peso, categoria, img, nomeImagem) VALUES('$item', '$preco', '$tipo', '$peso', '$categoria', '$nomeImagem', '$path')");
     }
 ?>
 
@@ -31,6 +31,7 @@
       rel="stylesheet">
     <link rel="stylesheet" href="../css/cd_produtos.css">
     <script src="../js/cd_produtos.js" defer></script>
+    <script src="../js/menu.js" defer></script>
     <title>JGL</title>
 </head>
 <body>
@@ -60,7 +61,7 @@
                         <label for="preco">Nome</label>
                     </div>
                     <div class="input">
-                        <input type="text" name="nome" class="nome" id="nome" autofocus>
+                        <input type="text" name="item" class="nome" id="nome" autofocus>
                     </div>
                 </div><br>
                 <div class="box">
@@ -108,6 +109,16 @@
                 </div>
             </form>
         </div>
+    </div>
+     <!-- MENU LATERAL -->
+    <div class="menu_modal">
+        <div class="btn_fechar">
+            <h1>X</h1>
+        </div>
+        <div class="menu_lista">
+            <a href="../html/cd_produtos.php">Cadastrar Produtos</a>
+            <a href="../html/comprar.php">comprar</a>
+        </div>                                 
     </div>
 </body>
 </html>

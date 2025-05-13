@@ -3,7 +3,7 @@
 $hostname = 'localhost';
 $username = 'root';
 $password = '';
-$bd = 'hortifruti';
+$bd = 'jgl';
 
 $con = new mysqli($hostname, $username, $password, $bd);
 
